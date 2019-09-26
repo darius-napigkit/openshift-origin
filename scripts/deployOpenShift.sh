@@ -240,10 +240,11 @@ DNSSERVER=`tail -1 /etc/resolv.conf | cut -d ' ' -f 2`
 
 runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/openshift-node/network_manager.yml"
 
-sleep 10
+sleep 30
 runuser -l $SUDOUSER -c "ansible all -b -o -m service -a \"name=NetworkManager state=restarted\""
-sleep 10
+sleep 30
 runuser -l $SUDOUSER -c "ansible all -b -o -m command -a \"nmcli con modify eth0 ipv4.dns-search $DOMAIN, ipv4.dns $DNSSERVER\""
+sleep 30
 runuser -l $SUDOUSER -c "ansible all -b -o -m service -a \"name=NetworkManager state=restarted\""
 echo $(date) " - NetworkManager configuration complete"
 
@@ -320,8 +321,8 @@ then
 	echo $(date) "- Creating Storage Class"
 
 	runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/configurestorageclass.yaml"
-	echo $(date) "- Sleep for 15"
-	sleep 15
+	echo $(date) "- Sleep for 35"
+	sleep 35
 	
 	# Installing Service Catalog, Ansible Service Broker and Template Service Broker
 	
@@ -335,7 +336,7 @@ fi
 
 if [ $METRICS == "true" ]
 then
-	sleep 30	
+	sleep 50	
 	echo $(date) "- Determining Origin version from rpm"
 	OO_VERSION="v"$(rpm -q origin | cut -d'-' -f 2 | head -c 3)
 	echo $(date) "- Deploying Metrics"
@@ -358,7 +359,7 @@ fi
 
 if [ $LOGGING == "true" ] 
 then
-	sleep 60
+	sleep 80
 	echo $(date) "- Deploying Logging"
 	if [ $AZURE == "true" ]
 	then
@@ -380,8 +381,8 @@ echo $(date) "- Deleting unecessary files"
 
 rm -rf /home/${SUDOUSER}/openshift-container-platform-playbooks
 
-echo $(date) "- Sleep for 30"
+echo $(date) "- Sleep for 50"
 
-sleep 30
+sleep 50
 
 echo $(date) " - Script complete"

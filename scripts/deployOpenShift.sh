@@ -242,7 +242,7 @@ runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/play
 
 sleep 420
 runuser -l $SUDOUSER -c "ansible all -b -o -m service -a \"name=NetworkManager state=restarted\""
-sleep 60
+sleep 420
 runuser -l $SUDOUSER -c "ansible all -b -o -m command -a \"nmcli con modify eth0 ipv4.dns-search $DOMAIN, ipv4.dns $DNSSERVER\""
 sleep 420
 runuser -l $SUDOUSER -c "ansible all -b -o -m service -a \"name=NetworkManager state=restarted\""
